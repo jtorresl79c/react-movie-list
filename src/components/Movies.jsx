@@ -9,6 +9,7 @@ export default class Movies extends Component {
 
     render() {
         const movies = this.props.movies
+        const deleteMovie = this.props.deleteMovie
         return (
             <table className='table table-stripped table-hover w-100'>
                 <thead>
@@ -35,7 +36,7 @@ export default class Movies extends Component {
                                     <i className="bi bi-heart"></i>
                                 </td>
                                 <td>
-                                    <button className="btn btn-danger">Delete</button>
+                                    <button className="btn btn-danger" onClick={ () => deleteMovie(movie._id) }>Delete</button>
                                 </td>
                             </tr>
                         ))

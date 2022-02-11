@@ -1,41 +1,86 @@
+import Styles from './styles.css'
+
 import React, { Component } from 'react';
-import { getMovies } from './services/fakeMovieService';
+import { getMovies, deleteMovie } from './services/fakeMovieService';
+import { getGenres } from './services/fakeGenreService'
 import Movies from './components/Movies';
 import Paginator from './components/Paginator';
+import GenresList from './components/GenresList';
+import MoviesStatus from './components/MoviesStatus';
 class App extends Component {
     constructor(props){
         super(props);
         this.state = {
             movies: getMovies(),
-            moviesPerPage: 3,
-            actualPage: 4
+            genres: getGenres(),
+            moviesPerPage: 2,
+            actualPage: 1,
+            actualGenreId: 'all'
         }
+        this.updateActualPage = this.updateActualPage.bind(this)
+        this.updateActualGenreId = this.updateActualGenreId.bind(this)
+        this.deleteMovie = this.deleteMovie.bind(this)
+    }
 
+    updateActualGenreId(id){
+        this.setState({actualGenreId: id, actualPage: 1})
+    }
+
+    updateActualPage(pageNumber){
+        this.setState({ actualPage: pageNumber })
+    }
+
+    deleteMovie(id){
+        deleteMovie(id)
+        this.setState({ movies: getMovies() })
     }
 
     render() {
-        
-        const movies = this.state.movies
+        const actualGenreId = this.state.actualGenreId
+        let movies = this.state.movies
+
+        if(actualGenreId != 'all'){
+            movies = movies.filter( movie => movie.genre._id == this.state.actualGenreId)
+        }
+
+        const genres = this.state.genres
 
         const moviesLength = movies.length
         const moviesPerPage = this.state.moviesPerPage
 
         const numberOfPages = Math.ceil(moviesLength/moviesPerPage)
         const actualPage = this.state.actualPage
+        
+        // Si estas en la ultima pagina y los eliminas todos, el acutalPage seguira igual, por lo que mostrara una pagina no existente
+        if(numberOfPages < actualPage){
+            this.setState({actualPage: numberOfPages})
+        }
         // console.log(numberOfPages)
 
         const start = (actualPage - 1) * moviesPerPage;
-        const end = (actualPage * moviesPerPage) - 1;
+        const end = (actualPage * moviesPerPage);
 
-        console.log(start)
-        console.log(end)
+        const moviesFiltered = movies.slice(start,end)
+
+        const updateActualPage = this.updateActualPage
+        const updateActualGenreId = this.updateActualGenreId
+        const deleteMovie = this.deleteMovie
+
+        // console.log(start)
+        // console.log(end)
+        // console.log(movies)
+        // console.log(movies.slice(start,end))
 
         return (
-            <div className='container'>
+            <div className='container mt-5'>
                 <div className="row">
+                    <div className="col-2">
+                        <GenresList genres={genres} actualGenreId={actualGenreId} updateActualGenreId={updateActualGenreId}></GenresList>
+                    </div>
                     <div className="col">
-                        <Movies movies={movies}></Movies>
-                        <Paginator numberOfPages={numberOfPages} actualPage={actualPage}></Paginator>
+                        <MoviesStatus moviesLength={moviesLength}></MoviesStatus>
+                        <Movies movies={moviesFiltered} deleteMovie={deleteMovie}></Movies>
+                        <Paginator numberOfPages={numberOfPages} actualPage={actualPage} updateActualPage={updateActualPage}></Paginator>
                     </div>
                 </div>
             </div>
