@@ -8,8 +8,11 @@ export default class Movies extends Component {
     }
 
     render() {
-        const movies = this.props.movies
-        const deleteMovie = this.props.deleteMovie
+        // const movies = this.props.movies
+        // const deleteMovie = this.props.deleteMovie
+
+        const { movies, deleteMovie } = this.props
+
         return (
             <table className='table table-stripped table-hover w-100'>
                 <thead>

@@ -6,9 +6,12 @@ export default class GenresList extends Component {
     }
 
     render() {
-        const genres = this.props.genres
-        const actualGenreId = this.props.actualGenreId
-        const updateActualGenreId = this.props.updateActualGenreId
+        // const genres = this.props.genres
+        // const actualGenreId = this.props.actualGenreId
+        // const updateActualGenreId = this.props.updateActualGenreId
+        const { genres, actualGenreId, updateActualGenreId} = this.props
+
+
         return (
             <ul className="list-group">
                 {/* <li class="list-group-item active" aria-current="true">An active item</li>
