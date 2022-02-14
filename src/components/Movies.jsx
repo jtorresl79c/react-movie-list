@@ -14,7 +14,7 @@ export default class Movies extends Component {
             <table className='table table-stripped table-hover w-100'>
                 <thead>
                     <tr>
-                        <th scope="col">Title</th>
+                        <th scope="col" className='bg bg-primary pointer'>Title</th>
                         <th scope="col">Genre</th>
                         <th scope="col">Stock</th>
                         <th scope="col">Rate</th>
