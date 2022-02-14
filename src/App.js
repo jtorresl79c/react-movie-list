@@ -22,6 +22,10 @@ class App extends Component {
         this.deleteMovie = this.deleteMovie.bind(this)
     }
 
+    componentDidMount(){
+        this.setState({  })
+    }
+
     updateActualGenreId(id){
         this.setState({actualGenreId: id, actualPage: 1})
     }
@@ -36,20 +40,24 @@ class App extends Component {
     }
 
     render() {
-        const actualGenreId = this.state.actualGenreId
-        let movies = this.state.movies
+        // const actualGenreId = this.state.actualGenreId
+        // const genres = this.state.genres
+        // const moviesPerPage = this.state.moviesPerPage
+        // const actualPage = this.state.actualPage
+        // let movies = this.state.movies
 
+        const { actualGenreId, genres, moviesPerPage, actualPage } = this.state
+        let { movies } = this.state
+
+        const { updateActualPage, updateActualGenreId, deleteMovie } = this
+        
         if(actualGenreId != 'all'){
             movies = movies.filter( movie => movie.genre._id == this.state.actualGenreId)
         }
 
-        const genres = this.state.genres
-
         const moviesLength = movies.length
-        const moviesPerPage = this.state.moviesPerPage
 
         const numberOfPages = Math.ceil(moviesLength/moviesPerPage)
-        const actualPage = this.state.actualPage
         
         // Si estas en la ultima pagina y los eliminas todos, el acutalPage seguira igual, por lo que mostrara una pagina no existente
         if(numberOfPages < actualPage){
@@ -62,9 +70,9 @@ class App extends Component {
 
         const moviesFiltered = movies.slice(start,end)
 
-        const updateActualPage = this.updateActualPage
-        const updateActualGenreId = this.updateActualGenreId
-        const deleteMovie = this.deleteMovie
+        // const updateActualPage = this.updateActualPage
+        // const updateActualGenreId = this.updateActualGenreId
+        // const deleteMovie = this.deleteMovie
 
         // console.log(start)
         // console.log(end)
