@@ -5,24 +5,40 @@ export default class Movies extends Component {
 
     constructor(props) {
         super(props)
+        this.raiseSort = this.raiseSort.bind(this)
     }
+
+    raiseSort(title){
+        console.log(title)
+        const sortedBy = { ...this.props.sortedBy } // Con esto se hace una copia del obj y no una referencia a que si lo pusieramos como = this.props.sortedBy
+        
+        const handleSort = this.props.handleSort
+
+        sortedBy.title = title
+
+        sortedBy.orderBy = sortedBy.orderBy === 'asc' ? 'desc' : 'asc'
+
+        handleSort(sortedBy)
+    }
+
+
 
     render() {
         // const movies = this.props.movies
         // const deleteMovie = this.props.deleteMovie
-
+        const raiseSort = this.raiseSort
         const { movies, deleteMovie } = this.props
 
         return (
             <table className='table table-stripped table-hover w-100'>
                 <thead>
                     <tr>
-                        <th scope="col" className='bg bg-primary pointer'>Title</th>
-                        <th scope="col">Genre</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('title') }>Title</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('genre') }>Genre</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('numberInStock') }>Stock</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('dailyRentalRate') }>Rate</th>
+                        <th scope="col" className=''></th>
+                        <th scope="col" className=''></th>
                     </tr>
                 </thead>
 

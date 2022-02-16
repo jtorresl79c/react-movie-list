@@ -7,19 +7,22 @@ import Movies from './components/Movies';
 import Paginator from './components/Paginator';
 import GenresList from './components/GenresList';
 import MoviesStatus from './components/MoviesStatus';
+import _ from 'lodash'
 class App extends Component {
     constructor(props){
         super(props);
         this.state = {
             movies: getMovies(),
             genres: getGenres(),
-            moviesPerPage: 2,
+            moviesPerPage: 8,
             actualPage: 1,
-            actualGenreId: 'all'
+            actualGenreId: 'all',
+            sortedBy: { title: 'title', orderBy: 'asc' }
         }
         this.updateActualPage = this.updateActualPage.bind(this)
         this.updateActualGenreId = this.updateActualGenreId.bind(this)
         this.deleteMovie = this.deleteMovie.bind(this)
+        this.handleSort = this.handleSort.bind(this)
     }
 
     componentDidMount(){
@@ -39,6 +42,11 @@ class App extends Component {
         this.setState({ movies: getMovies() })
     }
 
+    handleSort(sortedBy){
+        console.log(sortedBy)
+        this.setState({sortedBy})
+    }
+
     render() {
         // const actualGenreId = this.state.actualGenreId
         // const genres = this.state.genres
@@ -46,10 +54,10 @@ class App extends Component {
         // const actualPage = this.state.actualPage
         // let movies = this.state.movies
 
-        const { actualGenreId, genres, moviesPerPage, actualPage } = this.state
+        const { actualGenreId, genres, moviesPerPage, actualPage, sortedBy } = this.state
         let { movies } = this.state
 
-        const { updateActualPage, updateActualGenreId, deleteMovie } = this
+        const { updateActualPage, updateActualGenreId, deleteMovie, handleSort } = this
         
         if(actualGenreId != 'all'){
             movies = movies.filter( movie => movie.genre._id == this.state.actualGenreId)
@@ -70,6 +78,8 @@ class App extends Component {
 
         const moviesFiltered = movies.slice(start,end)
 
+        const sorted = _.orderBy(moviesFiltered, [sortedBy.title], [sortedBy.orderBy])
+
         // const updateActualPage = this.updateActualPage
         // const updateActualGenreId = this.updateActualGenreId
         // const deleteMovie = this.deleteMovie
@@ -87,7 +97,7 @@ class App extends Component {
                     </div>
                     <div className="col">
                         <MoviesStatus moviesLength={moviesLength}></MoviesStatus>
-                        <Movies movies={moviesFiltered} deleteMovie={deleteMovie}></Movies>
+                        <Movies movies={sorted} deleteMovie={deleteMovie} handleSort={handleSort} sortedBy={sortedBy}></Movies>
                         <Paginator numberOfPages={numberOfPages} actualPage={actualPage} updateActualPage={updateActualPage}></Paginator>
                     </div>
                 </div>
