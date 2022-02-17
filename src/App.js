@@ -78,6 +78,8 @@ class App extends Component {
 
         const moviesFiltered = movies.slice(start,end)
 
+        console.log('Ordenar por: ')
+        console.log(sortedBy)
         const sorted = _.orderBy(moviesFiltered, [sortedBy.title], [sortedBy.orderBy])
 
         // const updateActualPage = this.updateActualPage

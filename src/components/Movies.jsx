@@ -6,12 +6,21 @@ export default class Movies extends Component {
     constructor(props) {
         super(props)
         this.raiseSort = this.raiseSort.bind(this)
+        this.state = {
+            arrowIcon: {
+                title: '',
+                direction: ''
+            }
+        }
     }
 
     raiseSort(title){
         console.log(title)
+
+        
         const sortedBy = { ...this.props.sortedBy } // Con esto se hace una copia del obj y no una referencia a que si lo pusieramos como = this.props.sortedBy
         
+        this.setState({ arrowIcon: { title, direction: sortedBy.orderBy === 'asc' ? 'up' : 'down' } })
         const handleSort = this.props.handleSort
 
         sortedBy.title = title
@@ -33,12 +42,12 @@ export default class Movies extends Component {
             <table className='table table-stripped table-hover w-100'>
                 <thead>
                     <tr>
-                        <th scope="col" className='pointer' onClick={() => raiseSort('title') }>Title</th>
-                        <th scope="col" className='pointer' onClick={() => raiseSort('genre') }>Genre</th>
-                        <th scope="col" className='pointer' onClick={() => raiseSort('numberInStock') }>Stock</th>
-                        <th scope="col" className='pointer' onClick={() => raiseSort('dailyRentalRate') }>Rate</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('title') }>Title { this.state.arrowIcon.title === 'title' ? <i className={ `bi bi-caret-${ this.state.arrowIcon.direction }-square-fill` }></i> : null }</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('genre.name') }>Genre { this.state.arrowIcon.title === 'genre.name' ? <i className={ `bi bi-caret-${ this.state.arrowIcon.direction }-square-fill` }></i> : null }</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('numberInStock') }>Stock  { this.state.arrowIcon.title === 'numberInStock' ? <i className={ `bi bi-caret-${ this.state.arrowIcon.direction }-square-fill` }></i> : null }</th>
+                        <th scope="col" className='pointer' onClick={() => raiseSort('dailyRentalRate') }>Rate  { this.state.arrowIcon.title === 'dailyRentalRate' ? <i className={ `bi bi-caret-${ this.state.arrowIcon.direction }-square-fill` }></i> : null }</th>
                         <th scope="col" className=''></th>
-                        <th scope="col" className=''></th>
+                        <th scope="col" className=''></th> 
                     </tr>
                 </thead>
 
