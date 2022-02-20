@@ -17,12 +17,14 @@ class App extends Component {
             moviesPerPage: 8,
             actualPage: 1,
             actualGenreId: 'all',
-            sortedBy: { title: 'title', orderBy: 'asc' }
+            // sortedBy: { title: 'title', orderBy: 'asc' }
+            sortedBy: { title: '', orderBy: '' }
         }
         this.updateActualPage = this.updateActualPage.bind(this)
         this.updateActualGenreId = this.updateActualGenreId.bind(this)
         this.deleteMovie = this.deleteMovie.bind(this)
         this.handleSort = this.handleSort.bind(this)
+        this.handleLike = this.handleLike.bind(this)
     }
 
     componentDidMount(){
@@ -30,6 +32,7 @@ class App extends Component {
     }
 
     updateActualGenreId(id){
+        // this.handleResetSortBy()
         this.setState({actualGenreId: id, actualPage: 1})
     }
 
@@ -43,9 +46,26 @@ class App extends Component {
     }
 
     handleSort(sortedBy){
-        console.log(sortedBy)
+        // console.log(sortedBy)
         this.setState({sortedBy})
     }
+
+    handleLike(movieid){
+        let movies = [...this.state.movies]
+        movies = movies.map( movie => (
+            movie._id === movieid ? { ...movie, liked: !movie.liked } : movie
+        ) )
+
+        this.setState({movies})
+    }
+
+    // likeMovie(id){
+    //     let movies = this.state.movies
+
+    //     movies = movies.map( movie => {
+
+    //     } )
+    // }
 
     render() {
         // const actualGenreId = this.state.actualGenreId
@@ -57,7 +77,7 @@ class App extends Component {
         const { actualGenreId, genres, moviesPerPage, actualPage, sortedBy } = this.state
         let { movies } = this.state
 
-        const { updateActualPage, updateActualGenreId, deleteMovie, handleSort } = this
+        const { updateActualPage, updateActualGenreId, deleteMovie, handleSort, handleLike } = this
         
         if(actualGenreId != 'all'){
             movies = movies.filter( movie => movie.genre._id == this.state.actualGenreId)
@@ -78,8 +98,8 @@ class App extends Component {
 
         const moviesFiltered = movies.slice(start,end)
 
-        console.log('Ordenar por: ')
-        console.log(sortedBy)
+        // console.log('Ordenar por: ')
+        // console.log(sortedBy)
         const sorted = _.orderBy(moviesFiltered, [sortedBy.title], [sortedBy.orderBy])
 
         // const updateActualPage = this.updateActualPage
@@ -99,7 +119,7 @@ class App extends Component {
                     </div>
                     <div className="col">
                         <MoviesStatus moviesLength={moviesLength}></MoviesStatus>
-                        <Movies movies={sorted} deleteMovie={deleteMovie} handleSort={handleSort} sortedBy={sortedBy}></Movies>
+                        <Movies movies={sorted} deleteMovie={deleteMovie} handleSort={handleSort} sortedBy={sortedBy} handleLike={handleLike}></Movies>
                         <Paginator numberOfPages={numberOfPages} actualPage={actualPage} updateActualPage={updateActualPage}></Paginator>
                     </div>
                 </div>
